@@ -18,6 +18,8 @@
 	mouse.Move = Signal.new()
         mouse.WheelBackward = Signal.new()
         mouse.WheelForward = Signal.new()
+        mouse.KeyDown = Signal.new();
+        mouse.KeyUp = Signal.new();
 	local update_mouse = Instance.new("RemoteFunction",owner.Character)
 	update_mouse.Name = "Mouse_Handler"
 	local update_mouse_func = Instance.new("RemoteFunction",owner.Character)
@@ -33,9 +35,13 @@
 		end
 		return mouse
 	end
-	update_mouse_func.OnServerInvoke = function(Player,Func)
+	update_mouse_func.OnServerInvoke = function(Player,Func,x)
 		if mouse[Func] ~= nil and type(mouse[Func]) == "table" then
+			if x ~= nil then
+			mouse[Func]:Fire(x)
+			else
 			mouse[Func]:Fire()
+			end
 		end
 	end
 
@@ -71,6 +77,12 @@ update_mouse_func:InvokeServer("WheelBackward")
 end)
 mouse.WheelForward:Connect(function()
 update_mouse_func:InvokeServer("WheelForward")
+end)
+mouse.KeyUp:Connect(function(Key)
+update_mouse_func:InvokeServer("KeyUp",Key)
+end)
+mouse.KeyDown:Connect(function(Key)
+update_mouse_func:InvokeServer("KeyDown",Key)
 end)
 ]],owner.PlayerGui)
 return mouse
