@@ -1,4 +1,7 @@
-	local mouse = {}
+	if _G.Signal ~= nil then
+	Signal = _G.Signal
+	end
+        local mouse = {}
 
 	mouse.Hit = CFrame.new()
 	mouse.Origin = CFrame.new()
