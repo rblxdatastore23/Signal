@@ -63,6 +63,7 @@ function Module.ChatLyrics(Artist, Title,Dt)
 		Module.Chat(Lyric)
 
 		-- // Delay
+print(Dt[Index],"New")
 		wait(Dt[Index])
 	end
 end
