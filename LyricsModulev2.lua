@@ -48,7 +48,22 @@ function Module.Chat(Message)
 	-- // Chat the message
 	SayMessageRequest:FireServer(Message, "All")
 end
+function Module.SetUpText(Artist,Title,Dt,Label)
+	local DefaultDelay = 1
+	-- // Get the song's lyrics
+	local Song = Module.GetSongLyrics(Artist, Title)
 
+
+
+	-- // Loop through each lyric
+	for Index, Lyric in ipairs(Song) do
+		-- // Chat the lyric
+		Label.Text = tostring(Lyric)
+
+		-- // Delay
+		wait(Dt[Index])
+	end
+end
 -- // Chats each lyric of a song
 function Module.ChatLyrics(Artist, Title,Dt)
 	local DefaultDelay = 1
@@ -63,7 +78,6 @@ function Module.ChatLyrics(Artist, Title,Dt)
 		Module.Chat(Lyric)
 
 		-- // Delay
-print(Dt[Index],"New")
 		wait(Dt[Index])
 	end
 end
