@@ -2,7 +2,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 -- // Vars
-local SayMessageRequest = ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest
 local Module = {}
 
 -- //
