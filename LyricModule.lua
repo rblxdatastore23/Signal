@@ -63,7 +63,7 @@ function Module.ChatLyrics(Artist, Title)
 		Module.Chat(Lyric)
 
 		-- // Delay
-		wait(string.len(Lyric))
+		wait(string.len(Lyric)-8)
 	end
 end
 
