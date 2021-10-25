@@ -65,7 +65,7 @@ end
         Module.Chat(Lyric)
 
         -- // Delay
-        task.wait((type(DelayTable)=="table" and (DelayTable[Index] ~= nil and DelayTable[Index] or DefaultDelay)) or string.len(Lyric)-5)
+        task.wait((type(DelayTable)=="table" and (DelayTable[Index] ~= nil and DelayTable[Index] or DefaultDelay)) or string.len(Lyric)-2)
     end
 end
 
