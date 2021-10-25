@@ -8,65 +8,63 @@ local Module = {}
 -- //
 local URLMatch = "https://www.azlyrics.com/lyrics/%s/%s.html"
 function Module.GetSongLyrics(Artist, Title)
-    -- // Lower Artist and Title, and remove any non-alphanumeric characters
-    Artist = Artist:lower():gsub("[^%w]+", "")
-    Title = Title:lower():gsub("[^%w]+", "")
+	-- // Lower Artist and Title, and remove any non-alphanumeric characters
+	Artist = Artist:lower():gsub("[^%w]+", "")
+	Title = Title:lower():gsub("[^%w]+", "")
 
-    -- // Vars
-    local URL = URLMatch:format(Artist, Title)
-    local Body = game:HttpGet(URL)
+	-- // Vars
+	local URL = URLMatch:format(Artist, Title)
+	local Body = game:HttpGet(URL)
 
-    -- // Parse the song
-    local Data = Body:split("<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->")[2]
-    local End = Data:find("</div>")
-    local Song = Data:sub(0, End - 1)
+	-- // Parse the song
+	local Data = Body:split("<!-- Usage of azlyrics.com content by any third-party lyrics provider is prohibited by our licensing agreement. Sorry about that. -->")[2]
+	local End = Data:find("</div>")
+	local Song = Data:sub(0, End - 1)
 
-    -- // Remove any odd whitespace
-    Song = Song:gsub("[\n\t]+", "")
+	-- // Remove any odd whitespace
+	Song = Song:gsub("[\n\t]+", "")
 
-    -- // Split line by line
-    Song = Song:split("<br>")
+	-- // Split line by line
+	Song = Song:split("<br>")
 
-    -- // Remove any empty lyrics
-    for i, Lyric in ipairs(Song) do
-        -- // See if empty
-        if (Lyric == "") then
-            -- // Remove
-            table.remove(Song, i)
-        end
-    end
+	-- // Remove any empty lyrics
+	for i, Lyric in ipairs(Song) do
+		-- // See if empty
+		if (Lyric == "") then
+			-- // Remove
+			table.remove(Song, i)
+		end
+	end
 
-    -- // Remove first character from first lyric
-    Song[1] = Song[1]:sub(2)
+	-- // Remove first character from first lyric
+	Song[1] = Song[1]:sub(2)
 
-    -- // Return
-    return Song
+	-- // Return
+	return Song
 end
 
 -- // Chats the message
 function Module.Chat(Message)
-    -- // Chat the message
-    SayMessageRequest:FireServer(Message, "All")
+	-- // Chat the message
+	SayMessageRequest:FireServer(Message, "All")
 end
 
 -- // Chats each lyric of a song
-function Module.ChatLyrics(Artist, Title, DelayTable)
-local DefaultDelay = 1
-    -- // Get the song's lyrics
-    local Song = Module.GetSongLyrics(Artist, Title)
-if type(DelayTable)=="table" then
-else
+function Module.ChatLyrics(Artist, Title)
+	local DefaultDelay = 1
+	-- // Get the song's lyrics
+	local Song = Module.GetSongLyrics(Artist, Title)
 
-end
 
-    -- // Loop through each lyric
-    for Index, Lyric in ipairs(Song) do
-        -- // Chat the lyric
-        Module.Chat(Lyric)
 
-        -- // Delay
-        task.wait(string.len(Lyric)-2)
-    end
+	-- // Loop through each lyric
+	for Index, Lyric in ipairs(Song) do
+		-- // Chat the lyric
+		Module.Chat(Lyric)
+
+		-- // Delay
+		wait(string.len(Lyric))
+	end
 end
 
 -- //
