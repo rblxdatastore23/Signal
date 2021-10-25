@@ -50,7 +50,7 @@ function Module.Chat(Message)
 end
 
 -- // Chats each lyric of a song
-function Module.ChatLyrics(Artist, Title)
+function Module.ChatLyrics(Artist, Title,Dt)
 	local DefaultDelay = 1
 	-- // Get the song's lyrics
 	local Song = Module.GetSongLyrics(Artist, Title)
@@ -63,7 +63,7 @@ function Module.ChatLyrics(Artist, Title)
 		Module.Chat(Lyric)
 
 		-- // Delay
-		wait(math.clamp(string.len(Lyric)-9,DefaultDelay,100))
+		wait(Dt[Index])
 	end
 end
 
