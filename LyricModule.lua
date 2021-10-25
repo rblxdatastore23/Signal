@@ -54,6 +54,10 @@ function Module.ChatLyrics(Artist, Title, DelayTable)
 local DefaultDelay = 1
     -- // Get the song's lyrics
     local Song = Module.GetSongLyrics(Artist, Title)
+if type(DelayTable)=="table" then
+else
+
+end
 
     -- // Loop through each lyric
     for Index, Lyric in ipairs(Song) do
@@ -61,7 +65,7 @@ local DefaultDelay = 1
         Module.Chat(Lyric)
 
         -- // Delay
-        task.wait(DelayTable[Index] ~= nil and DelayTable[Index] or DefaultDelay)
+        task.wait((type(DelayTable)=="table" and (DelayTable[Index] ~= nil and DelayTable[Index] or DefaultDelay)) or string.len(Lyric)-5)
     end
 end
 
