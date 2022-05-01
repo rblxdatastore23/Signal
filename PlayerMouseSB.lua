@@ -54,7 +54,7 @@ update_camera.OnServerInvoke = function(Player,Data)
 				end
 			end
 		end
-		return mouse
+		return Camera
 	end
 	update_mouse_func.OnServerInvoke = function(Player,...)
 		local A = table.pack(...)
@@ -125,4 +125,4 @@ update_mouse_func:InvokeServer("KeyDown",Key)
 end)
 camera.Changed:Connect(function(...) update_camera_func:InvokeServer("Changed", ...)
 ]],owner.PlayerGui)
-return Mouse, Camera
+return mouse, Camera
