@@ -123,6 +123,6 @@ end)
 mouse.KeyDown:Connect(function(Key)
 update_mouse_func:InvokeServer("KeyDown",Key)
 end)
-camera.Changed:Connect(function(...) update_camera_func:InvokeServer("Changed", ...) end)
+camera.Changed:Connect(function(...) update_camera_func:InvokeServer("Changed", ...) end);
 ]],owner.PlayerGui)
 return mouse, Camera
