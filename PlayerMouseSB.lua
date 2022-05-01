@@ -10,6 +10,7 @@ Camera.Focus = CFrame.new()
 Camera.CameraType = Enum.CameraType.Fixed
 Camera.CameraSubject = nil;
 Camera.ViewportSize = Vector2.new();
+Camera.Changed = Signal.new(1)
 
 	mouse.UnitRay = Ray.new(Vector3.new(0,0,0),Vector3.new(-1,0,0))
 	mouse.X = 0
@@ -55,19 +56,24 @@ update_camera.OnServerInvoke = function(Player,Data)
 		end
 		return mouse
 	end
-	update_mouse_func.OnServerInvoke = function(Player,Func,x)
+	update_mouse_func.OnServerInvoke = function(Player,...)
+		local A = table.pack(...)
+	Func = A[1]
 		if mouse[Func] ~= nil and type(mouse[Func]) == "table" then
 			if x ~= nil then
-			mouse[Func]:Fire(x)
+			mouse[Func]:Fire(unpack(A, 2, table.maxn(A)))
 			else
 			mouse[Func]:Fire()
 			end
 		end
 	end
-update_camera_func.OnServerInvoke = function(Player,Func,x)
+update_camera_func.OnServerInvoke = function(Player,...)
+	local A = table.pack(...)
+	Func = A[1]
+	
 		if Camera[Func] ~= nil and type(Camera[Func]) == "table" then
 			if x ~= nil then
-			Camera[Func]:Fire(x)
+			Camera[Func]:Fire(unpack(A, 2, table.maxn(A)))
 			else
 			Camera[Func]:Fire()
 			end
@@ -117,5 +123,6 @@ end)
 mouse.KeyDown:Connect(function(Key)
 update_mouse_func:InvokeServer("KeyDown",Key)
 end)
+camera.Changed:Connect(function(...) update_camera_func:InvokeServer("Changed", ...)
 ]],owner.PlayerGui)
 return Mouse, Camera
