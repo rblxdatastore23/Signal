@@ -1,35 +1,55 @@
-	if _G.Signal ~= nil then
-	Signal = _G.Signal
-	end
-        local mouse = {}
-
+	Signal = loadstring(game:GetService("HttpService"):GetAsync("https://gist.githubusercontent.com/RealEthanPlayzDev/c66c91006d75fc89c43171a372587bdb/raw/ad3baf63fa320e14edf83e18d92b07ce549d5256/RESignal.luau"))()
+        local Mouse = {}
+        local Camera = {}
+        mouse = Mouse;
 	mouse.Hit = CFrame.new()
 	mouse.Origin = CFrame.new()
+        Camera.CFrame = CFrame.new();
+Camera.FieldOfView = 70;
+Camera.Focus = CFrame.new()
+Camera.CameraType = Enum.CameraType.Fixed
+Camera.CameraSubject = nil;
+Camera.ViewportSize = Vector2.new();
+
 	mouse.UnitRay = Ray.new(Vector3.new(0,0,0),Vector3.new(-1,0,0))
 	mouse.X = 0
 	mouse.Y = 0
 	mouse.Target = nil
 	mouse.TargetFilter = nil
-	mouse.Button1Down = Signal.new()
-	mouse.Button1Up = Signal.new()
-	mouse.Button1Down = Signal.new()	
-	mouse.Button1Up = Signal.new()
-	mouse.Idle = Signal.new()
-	mouse.Move = Signal.new()
-        mouse.WheelBackward = Signal.new()
-        mouse.WheelForward = Signal.new()
-        mouse.KeyDown = Signal.new();
-        mouse.KeyUp = Signal.new();
-	local update_mouse = Instance.new("RemoteFunction",owner.Character)
-	update_mouse.Name = "Mouse_Handler"
-	local update_mouse_func = Instance.new("RemoteFunction",owner.Character)
-	update_mouse_func.Name = "Mouse_Func"
+	mouse.Button1Down = Signal.new(1)
+	mouse.Button1Up = Signal.new(1)
+	mouse.Button1Down = Signal.new(1)	
+	mouse.Button1Up = Signal.new(1)
+	mouse.Idle = Signal.new(1)
+	mouse.Move = Signal.new(1)
+        mouse.WheelBackward = Signal.new(1)
+        mouse.WheelForward = Signal.new(1) 
 
+        mouse.KeyDown = Signal.new(1);
+        mouse.KeyUp = Signal.new(1);
+	local update_mouse = Instance.new("RemoteFunction", owner.Character)
+	update_mouse.Name = "Mouse_Handler"
+local update_camera = Instance.new("RemoteFunction", owner.Character)
+	update_camera.Name = "Camera_Handler"
+	local update_mouse_func = Instance.new("RemoteFunction", owner.Character)
+	update_mouse_func.Name = "Mouse_Func"
+local update_camera_func = Instance.new("RemoteFunction", owner.Character)
+	update_camera_func.Name = "Cam_Func"
 	update_mouse.OnServerInvoke = function(Player,Data)
 		for i,v in pairs(Data) do
 			for ii,vv in pairs(mouse) do
 				if i == ii then
 					mouse[i] = v
+				end
+			end
+		end
+		return mouse
+	end
+update_camera.OnServerInvoke = function(Player,Data)
+		for i,v in pairs(Data) do
+			for ii,vv in pairs(Camera) do
+				if i == ii then
+					Camera[i] = v
 				end
 			end
 		end
@@ -44,14 +64,27 @@
 			end
 		end
 	end
+update_camera_func.OnServerInvoke = function(Player,Func,x)
+		if Camera[Func] ~= nil and type(Camera[Func]) == "table" then
+			if x ~= nil then
+			Camera[Func]:Fire(x)
+			else
+			Camera[Func]:Fire()
+			end
+		end
+	end
 
 NLS([[
 local update_mouse = owner.Character:WaitForChild("Mouse_Handler",10^99)
+local update_camera = owner.Character:WaitForChild("Camera_Handler",10^99)
 local update_mouse_func = owner.Character:WaitForChild("Mouse_Func",10^99)
+local update_camera_func = owner.Character:WaitForChild("Cam_Func",10^99)
 local mouse = owner:GetMouse()
+local camera = workspace.CurrentCamera
 if update_mouse then
-game:GetService("RunService").Stepped:Connect(function()
+game:GetService("RunService").RenderStepped:Connect(function()
 local mouse_table = update_mouse:InvokeServer({X = mouse.X,Y = mouse.Y,UnitRay = mouse.UnitRay,Origin = mouse.Origin,Hit = mouse.Hit,Target = mouse.Target,TargetFilter = mouse.TargetFilter})
+local camera_table = update_camera:InvokeServer({CFrame = camera.CFrame, FieldOfView = camera.FieldOfView, Focus = camera.Focus, CameraType = camera.CameraType, CameraSubject = camera.CameraSubject, ViewportSize = camera.ViewportSize})
 end)
 end
 mouse.Button1Down:Connect(function()
