@@ -118,4 +118,4 @@ mouse.KeyDown:Connect(function(Key)
 update_mouse_func:InvokeServer("KeyDown",Key)
 end)
 ]],owner.PlayerGui)
-return mouse
+return Mouse, Camera
